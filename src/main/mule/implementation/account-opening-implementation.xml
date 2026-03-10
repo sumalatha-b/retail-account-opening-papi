@@ -170,7 +170,7 @@ output application/java
 			</ee:variables>
 		</ee:transform>
 		<flow-ref doc:name="call to Microservices" doc:id="ffb3127a-b543-4dcc-8373-11202b53715d" name="commonflowTo-PAPI-Sub_Flow" target="microserviceResponse"/>
-		<ee:transform doc:name="Transform Message" doc:id="a0e2fea0-78b9-4ebb-8821-431cb6b3e9f1" >
+		<ee:transform doc:name="requestPayload to Status" doc:id="a0e2fea0-78b9-4ebb-8821-431cb6b3e9f1" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -193,7 +193,7 @@ output application/java
 			</ee:variables>
 		</ee:transform>
 		<flow-ref doc:name="call to Status Update" doc:id="156304f6-861d-4bb4-8a65-f676b11d51da" name="commonflowTo-PAPI-Sub_Flow"/>
-		<ee:transform doc:name="Transform Message" doc:id="ede11361-66d5-458b-99d1-190c4015a746" >
+		<ee:transform doc:name="final response" doc:id="ede11361-66d5-458b-99d1-190c4015a746" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
