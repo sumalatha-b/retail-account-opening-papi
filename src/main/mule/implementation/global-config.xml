@@ -11,6 +11,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 <http:listener-config name="retail-accountopening-papi-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
-    <apikit:config name="retail-accountopening-papi-config" api="resource::a09c0161-1d9b-4ade-9a09-0e11e7d07848:retail-accountopening-papi:1.0.8:oas:zip:retail-accountopening-papi.yaml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-	 <api-gateway:autodiscovery apiId="20772984" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="85313934-42ef-4bfa-aa31-a48648f57799" flowRef="retail-accountopening-papi-main" />	
+    <apikit:config name="retail-accountopening-papi-config" api="resource::a09c0161-1d9b-4ade-9a09-0e11e7d07848:retail-accountopening-papi:1.0.12:oas:zip:retail-accountopening-papi.yaml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	 <api-gateway:autodiscovery apiId="20772984" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="85313934-42ef-4bfa-aa31-a48648f57799" flowRef="retail-accountopening-papi-main" />
+	<configuration-properties doc:name="Configuration properties" doc:id="0520b9f9-c7f2-420e-b044-c602bbe20c7b" file="properties/dev.yaml" />	
  </mule>

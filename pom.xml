@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>a09c0161-1d9b-4ade-9a09-0e11e7d07848</groupId>
 			<artifactId>retail-accountopening-papi</artifactId>
-			<version>1.0.8</version>
+			<version>1.0.12</version>
 			<classifier>oas</classifier>
 			<type>zip</type>
 		</dependency>

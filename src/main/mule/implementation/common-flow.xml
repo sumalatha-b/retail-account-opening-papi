@@ -6,7 +6,7 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<sub-flow name="commonflowTo-PAPI-Sub_Flow" doc:id="97978527-b83c-4198-a915-cf52524c2bdf" >
 		<logger level="INFO" doc:name="Before calling AMS" doc:id="77b032d3-aec6-41c0-8f49-27df1d62bf1c" message="#[payload]"/>
-		<http:request doc:name="call to AZM" doc:id="0c073be3-fef3-48fd-832d-4d0c2195795d" method="POST" url="http://13.201.40.80:8080/api/v1/onboarding/retail"/>
+		<http:request doc:name="call to AZM" doc:id="0c073be3-fef3-48fd-832d-4d0c2195795d" method="#[vars.endpoint.method]" url="#[vars.endpoint.path]"/>
 		<logger level="INFO" doc:name="After calling AMS" doc:id="8406fc95-5f0a-499a-9c93-ce720ef81345" message="#[payload]" />
 	</sub-flow>
 </mule>

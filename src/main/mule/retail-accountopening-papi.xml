@@ -40,6 +40,7 @@
         <flow-ref doc:name="Flow Reference" doc:id="34b26270-5912-457a-8ee4-533aa6d38ef2" name="onboarding-cases-Sub_Flow"/>
     </flow>
     <flow name="post:\party-reference-data-directory\parties:application\json:retail-accountopening-papi-config">
-        <logger level="INFO" message="post:\party-reference-data-directory\parties:application\json:retail-accountopening-papi-config" />
+        <flow-ref doc:name="Flow Reference" doc:id="464605df-7df0-4933-8c0c-6d2f20a9cba0" name="onboarding-create-Sub_Flow"/>
+		<logger level="INFO" message="post:\party-reference-data-directory\parties:application\json:retail-accountopening-papi-config" doc:name="Logger1"/>
     </flow>
 </mule>

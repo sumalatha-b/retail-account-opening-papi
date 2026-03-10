@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
+
 <mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<sub-flow name="onboarding-cases-Sub_Flow" doc:id="3c74b391-d843-43e8-a080-a1562eddc859" >
-		<logger level="INFO" doc:name="Start of the flow" doc:id="ad65e71b-ad13-430b-a84d-edcc6de6d9ea" message="#[payload]"/>
-		<ee:transform doc:name="requestPayload to AzureMicroServices" doc:id="e0c57337-82c3-44cb-a875-072d064f9737" >
+	<sub-flow name="onboarding-cases-Sub_Flow" doc:id="61acbdf2-0683-4682-8675-9fb601ec2489" >
+		<logger level="INFO" doc:name="Start of the flow" doc:id="df6d0d5d-9d85-4dae-88c5-301bf3344954" message="#[payload]"/>
+		<ee:transform doc:name="requestPayload to AzureMicroServices" doc:id="4710221a-8d5b-42a0-afcb-0777799e4d4b" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
@@ -21,21 +21,30 @@ output application/json
   "fullName" : payload.fullName
 }]]></ee:set-payload>
 			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="endpoint" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"method": "POST",
+	"path": p('AzureMicroServices.retail')
+	
+	}]]></ee:set-variable>
+			</ee:variables>
 		</ee:transform>
-		<flow-ref doc:name="call to Microservices" doc:id="7a950d8e-14e2-4282-a7e5-3107cbf76764" name="commonflowTo-PAPI-Sub_Flow"/>
-		<logger level="INFO" doc:name="End of the flow" doc:id="d3a906f0-e779-4bcf-b471-37b7079ac192" message="#[payload]" />
-		<logger level="INFO" doc:name="Logger" doc:id="9a8b4848-6301-4723-ad07-92f65a2b5cab" />
+		<flow-ref doc:name="call to Microservices" doc:id="39b94c50-37c8-486d-b38b-173a3289b091" name="commonflowTo-PAPI-Sub_Flow"/>
+		<logger level="INFO" doc:name="End of the flow" doc:id="b9b2efe7-2c5f-41b6-80fc-7eac067d35e2" message="#[payload]" />
+		<logger level="INFO" doc:name="Logger" doc:id="62b31c33-7ffb-4350-b7f0-4913dee0458e" />
 	</sub-flow>
 	
-	<sub-flow name="onboarding-create-Sub_Flow" doc:id="dd14d79b-03e6-484f-985a-203550c7778b" >
-		<logger level="INFO" doc:name="Start of the flow" doc:id="48268d7f-73be-4b63-b62b-fcef0426b2a3" message="#[payload]"/>
-		<!-- [STUDIO:"validate SSN"]<flow-ref doc:name="validate SSN" doc:id="0221beed-1321-4f31-90ec-5fe90ab0cc80" /> [STUDIO] -->
-		<ee:transform doc:name="requestPayload to AzureMicroServices" doc:id="23dc198b-4521-4bab-86fb-4aff4261f5e7" >
+	<sub-flow name="onboarding-create-Sub_Flow" doc:id="1628cb19-b7f0-44ee-92dc-7c434f8cb866" >
+		<logger level="INFO" doc:name="Start of the flow" doc:id="13a36209-acf9-44ae-aefe-be9b858e28d8" message="#[payload]"/>
+		<ee:transform doc:name="requestPayload to AzureMicroServices" doc:id="7b5f9c13-2898-4e23-9d05-34ef74768dc3" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
- 
- 
+
+
 fun splitPartyName(partyName) = do {
     var parts = partyName splitBy " "
     ---
@@ -44,15 +53,15 @@ fun splitPartyName(partyName) = do {
         lastName:  (parts[1 to -1] joinBy " ") default ""
     }
 }
- 
+
 fun buildBackendAddress(partyAddress) = {
     street: partyAddress.addressLine1,
     city:   partyAddress.addressCityName,
     state:  partyAddress.addressStateProvince,
     zip:    partyAddress.addressPostalCode
 }
- 
- 
+
+
 fun buildProfileAddress(addr, involvementType) = {
     "type":        if (involvementType == "EDUCATION") "school" else "employment",
     addressLine: addr.addressLine1,
@@ -61,14 +70,14 @@ fun buildProfileAddress(addr, involvementType) = {
     postalCode:  addr.addressPostalCode,
     country:     addr.addressCountryCode
 }
- 
- 
+
+
 fun buildUSCitizenCitizenship(partyIdentification) = {
     status:     "us_citizen",
     ssnOrItin:  partyIdentification.partyIdentificationRecord.partyIdentificationValue
 }
- 
- 
+
+
 fun buildNonUSCitizenship(partyIdentification) = {
     status:     "non_us",
    
@@ -93,8 +102,8 @@ fun buildNonUSCitizenship(partyIdentification) = {
             idValue: rec.partyIdentificationValue
         }
 }
- 
- 
+
+
 fun buildAdditionalProfiles(partyInvolvement) =
     (partyInvolvement default []) map (involvement) ->
         if (involvement.partyInvolvementType == "EDUCATION")
@@ -118,14 +127,14 @@ fun buildAdditionalProfiles(partyInvolvement) =
                 addresses: (involvement.partyInvolvementRecord.partyInvolvementAddress default [])
                     map (addr) -> buildProfileAddress(addr, "EMPLOYMENT")
             }
- 
- 
+
+
 var nameparts = splitPartyName(payload.partyRecord.partyName)
 ---
 {
     
     caseId: payload.onboardingCaseReference,
- 
+
     
     customer: {
         firstName:   nameparts.firstName,
@@ -136,23 +145,62 @@ var nameparts = splitPartyName(payload.partyRecord.partyName)
         country:     payload.partyRecord.partyNationality,
         address:     buildBackendAddress(payload.partyRecord.partyAddress)
     },
- 
+
     
     citizenship:
         if (payload.partyIdentification.partyLegalStatus == "us_citizen")
             buildUSCitizenCitizenship(payload.partyIdentification)
         else
             buildNonUSCitizenship(payload.partyIdentification),
- 
+
    
     additionalProfiles: buildAdditionalProfiles(payload.partyInvolvement)
 }
 ]]></ee:set-payload>
 			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="endpoint" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"method": "POST",
+	"path": p('AzureMicroServices.customer')
+	
+	}]]></ee:set-variable>
+			</ee:variables>
 		</ee:transform>
-		<!-- [STUDIO:"call to Microservices"]<flow-ref doc:name="call to Microservices" doc:id="b666b5fb-66cc-4c33-bde5-4670ee1c0e65" name="commonflowTo-PAPI-Sub_Flow"/> [STUDIO] -->
-		<logger level="INFO" doc:name="End of the flow" doc:id="e88b6976-a98e-4eed-951b-f7338b603fe5" message="#[payload]" />
+		<flow-ref doc:name="call to Microservices" doc:id="ffb3127a-b543-4dcc-8373-11202b53715d" name="commonflowTo-PAPI-Sub_Flow" target="microserviceResponse"/>
+		<ee:transform doc:name="Transform Message" doc:id="a0e2fea0-78b9-4ebb-8821-431cb6b3e9f1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+  "caseId": vars.microserviceResponse.caseId default null,
+  "status": "IN_PROGRESS",
+  "customerId" : vars.microserviceResponse.customerId default null
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="endpoint" ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"method": "PATCH",
+	"path": p('AzureMicroServices.status')
+	
+	}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="call to Status Update" doc:id="156304f6-861d-4bb4-8a65-f676b11d51da" name="commonflowTo-PAPI-Sub_Flow"/>
+		<ee:transform doc:name="Transform Message" doc:id="ede11361-66d5-458b-99d1-190c4015a746" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+vars.microserviceResponse]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="End of the flow" doc:id="aa2b7728-7565-43d0-84ce-32a8088bd791" message="#[payload]" />
 	</sub-flow>
 </mule>
- 
- 

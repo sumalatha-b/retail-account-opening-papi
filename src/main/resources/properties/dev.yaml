@@ -1,5 +1,8 @@
 AzureMicroServices:
- url: "http://13.201.40.80:8080/api/v1/onboarding/retail"
+ retail: "http://13.201.40.80:8080/api/v1/onboarding/retail"
+ customer: "http://13.233.131.121:8080/api/customer-retail"
+ status: "http://13.201.40.80:8080/api/v1/onboarding/cases/status"
+ 
  
  
 api:
