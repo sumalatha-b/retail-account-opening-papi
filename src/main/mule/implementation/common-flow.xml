@@ -1,12 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<sub-flow name="commonflowTo-PAPI-Sub_Flow" doc:id="97978527-b83c-4198-a915-cf52524c2bdf" >
 		<logger level="INFO" doc:name="Before calling AMS" doc:id="77b032d3-aec6-41c0-8f49-27df1d62bf1c" message="#[payload]"/>
 		<http:request doc:name="call to AZM" doc:id="0c073be3-fef3-48fd-832d-4d0c2195795d" method="#[vars.endpoint.method]" url="#[vars.endpoint.path]"/>
 		<logger level="INFO" doc:name="After calling AMS" doc:id="8406fc95-5f0a-499a-9c93-ce720ef81345" message="#[payload]" />
+	</sub-flow>
+	<sub-flow name="email-Sub_Flow" doc:id="84d8d8cb-6bba-4eeb-a5a4-a5e8c7fe100a" >
+		<parse-template doc:name="Parse Template" doc:id="8800b0f0-4644-4486-bd14-8765da7be0fc" location="template\emailResponce.template" target="template"/>
+		<ee:transform doc:name="Transform Message" doc:id="a0f1d2f5-b6d8-4f25-b5fc-cabdc5ef5fa5" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="emailRequest" ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"fromAddress": "rajkumar.s@nexturn.com",
+"toAddress": payload.partyRecord.partyContactDetails.partyContactEmailAddress,
+"subject": "Welcome to UFCU - Account Created"
+}]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<email:send doc:name="Send Email" config-ref="Email_SMTP" subject="#[vars.emailRequest.subject]" fromAddress="#[vars.emailRequest.fromAddress]">
+
+            <email:to-addresses>
+                <email:to-address value="#[vars.emailRequest.toAddress]" />
+            </email:to-addresses>
+
+            <email:body contentType="text/html" encoding="UTF-8" contentTransferEncoding="Quoted-Printable">
+                <email:content><![CDATA[#[vars.template]]]></email:content>
+            </email:body>
+
+        </email:send>
+		<ee:transform doc:name="Set Success Response">
+            <ee:message>
+                <ee:set-payload><![CDATA[
+%dw 2.0
+output application/json
+---
+{
+  Message: "Email Sent Successfully"
+}
+]]></ee:set-payload>
+            </ee:message>
+            <ee:variables>
+                <ee:set-variable variableName="httpStatus"><![CDATA[200]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
 	</sub-flow>
 </mule>

@@ -38,7 +38,7 @@ output application/java
 	</sub-flow>
 	
 	<sub-flow name="onboarding-create-Sub_Flow" doc:id="1628cb19-b7f0-44ee-92dc-7c434f8cb866" >
-		<logger level="INFO" doc:name="Start of the flow" doc:id="13a36209-acf9-44ae-aefe-be9b858e28d8" message="#[payload]"/>
+		<logger level="INFO" doc:name="Start of the flow" doc:id="13a36209-acf9-44ae-aefe-be9b858e28d8" message='#[dw::Runtime::eval(readUrl("classpath://maskPayload.dwl","application/dw"), {payload: payload})]'/>
 		<ee:transform doc:name="requestPayload to AzureMicroServices" doc:id="7b5f9c13-2898-4e23-9d05-34ef74768dc3" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0

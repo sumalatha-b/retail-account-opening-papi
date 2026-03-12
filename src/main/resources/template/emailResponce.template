@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Welcome to UFCU</title>
+</head>
+<body style="margin:0;padding:0;background-color:#eef2f7;font-family:Arial, Helvetica, sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#eef2f7;padding:30px 0;">
+<tr><td align="center">
+
+<table width="650" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.08);">
+
+<!-- HEADER -->
+<tr>
+<td style="background:#0b2e6b;padding:20px;">
+<table width="100%"><tr>
+<td style="color:white;font-size:20px;font-weight:bold;">UFCU Credit Union</td>
+<td align="right">
+<img src="data:image/png;base64,#[output text/plain --- dw::core::Binaries::toBase64(readUrl('classpath://ufculogo.png', 'application/octet-stream'))]" alt="UFCU Logo" style="height:60px;display:block;">
+</td>
+</tr></table>
+</td>
+</tr>
+
+<!-- BANNER -->
+<tr>
+<td style="background:#f3f6fb;text-align:center;padding:30px;">
+<h2 style="margin:0;color:#0b2e6b;">Welcome to UFCU</h2>
+<p style="margin-top:8px;color:#555;font-size:14px;">Your trusted financial partner</p>
+</td>
+</tr>
+
+<!-- EMAIL BODY -->
+<tr>
+<td style="padding:40px;color:#333;font-size:15px;line-height:1.7;">
+<p>Dear <strong>#[payload.partyRecord.partyName]</strong>,</p>
+<p>Congratulations! Your checking account with <strong>UFCU</strong> has been successfully created. We are excited to have you as a member of our credit union.</p>
+<p><strong>Account Number:</strong> #[vars.accountNumber]</p>
+<p>With your new account you can enjoy:</p>
+<ul>
+<li>Online and Mobile Banking</li>
+<li>Secure money transfers</li>
+<li>Bill payments</li>
+<li>24/7 account access</li>
+</ul>
+<p>You can log in anytime to manage your finances easily.</p>
+<table align="center" cellpadding="0" cellspacing="0" style="margin:30px 0;">
+<tr>
+<td style="background:#0b2e6b;padding:14px 28px;border-radius:5px;">
+<a href="https://www.ufcu.org" style="color:#ffffff;text-decoration:none;font-weight:bold;font-size:14px;">Access Online Banking</a>
+</td>
+</tr>
+</table>
+<p>Thank you for choosing <strong>UFCU</strong>. We look forward to serving you.</p>
+</td>
+</tr>
+
+<!-- FOOTER -->
+<tr>
+<td style="background:#f4f6f9;text-align:center;padding:25px;font-size:12px;color:#666;line-height:1.6;">
+<p style="margin:0;">&copy; 2026 UFCU Credit Union</p>
+<p style="margin-top:6px;">Secure &bull; Trusted &bull; Member Focused</p>
+</td>
+</tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>
+
+

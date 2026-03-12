@@ -7,4 +7,20 @@ AzureMicroServices:
  
 api:
  autoDiscoveryId: ""
+
+# Email SMTP Configuration Properties
+
+smtp:
+  host: "smtp.gmail.com"
+  port: "587"
+  user: "thulasisampangi01@gmail.com"
+  password: "bjhf cwfl jgga ditr"
+  starttls: "true"
+
+
+
+# Additional SMTP Properties (if needed)
+# smtp.ssl=false
+# smtp.timeout=30000
+
  
